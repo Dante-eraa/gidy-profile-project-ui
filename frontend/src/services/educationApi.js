@@ -9,6 +9,11 @@ export const educationApi = baseApi.injectEndpoints({
       providesTags: ["Education"],
     }),
 
+    getPublicEducations: builder.query({
+      query: (profileId) => `/education/public/${profileId}`,
+      providesTags: ["Education"],
+    }),
+
     createEducation: builder.mutation({
       query: (data) => ({
         url: "/education",
@@ -39,6 +44,7 @@ export const educationApi = baseApi.injectEndpoints({
 
 export const {
   useGetEducationsQuery,
+  useGetPublicEducationsQuery,
   useCreateEducationMutation,
   useUpdateEducationMutation,
   useDeleteEducationMutation,

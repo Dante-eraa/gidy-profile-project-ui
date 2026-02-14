@@ -52,6 +52,8 @@ export default function ExperienceModal({ isOpen, onClose, experience }) {
         <Formik
           enableReinitialize
           validationSchema={validationSchema}
+          validateOnChange={false}
+          validateOnBlur={true}
           initialValues={{
             title: experience?.title || "",
             company: experience?.company || "",

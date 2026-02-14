@@ -3,8 +3,15 @@ import { baseApi } from "./baseApi";
 
 export const experienceApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // PRIVATE (Owner)
     getExperiences: builder.query({
       query: () => "/experience",
+      providesTags: ["Experience"],
+    }),
+
+    // PUBLIC (Guest view)
+    getPublicExperiences: builder.query({
+      query: (profileId) => `/experience/public/${profileId}`,
       providesTags: ["Experience"],
     }),
 
@@ -38,6 +45,7 @@ export const experienceApi = baseApi.injectEndpoints({
 
 export const {
   useGetExperiencesQuery,
+  useGetPublicExperiencesQuery,
   useCreateExperienceMutation,
   useUpdateExperienceMutation,
   useDeleteExperienceMutation,

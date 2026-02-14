@@ -11,9 +11,26 @@ import {
 const validationSchema = Yup.object({
   title: Yup.string().required("Certification name is required"),
   issuer: Yup.string().required("Issuer is required"),
-  issueDate: Yup.date().required("Issue date is required"),
-  expiryDate: Yup.date().nullable(),
-  certificateUrl: Yup.string().url().nullable(),
+
+  issueDate: Yup.string().required("Issue date is required"),
+
+  expiryDate: Yup.string()
+    .nullable()
+    .transform((value) => (value === "" ? null : value))
+    .test(
+      "expiry-after-issue",
+      "Expiry date cannot be before issue date",
+      function (value) {
+        const { issueDate } = this.parent;
+        if (!value || !issueDate) return true;
+        return new Date(value) >= new Date(issueDate);
+      },
+    ),
+
+  certificateUrl: Yup.string()
+    .nullable()
+    .transform((value) => (value === "" ? null : value))
+    .url("Enter a valid URL"),
 });
 
 export default function CertificationModal({ isOpen, onClose, certification }) {

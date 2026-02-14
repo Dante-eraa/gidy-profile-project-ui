@@ -36,7 +36,7 @@ export default function Login() {
         );
 
         toast.success(response.message || "Login successful 🎉");
-        navigate("/dashboard"); // redirect
+        navigate(`/profile/${response.data.user.profile.slug}`);
       } else {
         toast.error(response.message || "Login failed");
       }

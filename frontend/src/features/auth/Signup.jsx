@@ -37,7 +37,7 @@ export default function Signup() {
           }),
         );
         toast.success(response.message || "Registered successfully 🎉");
-        navigate("/profile");
+        navigate("/edit-profile");
       } else {
         toast.error(response.message || "Registration failed");
       }

@@ -5,16 +5,20 @@ export const certificationApi = baseApi.injectEndpoints({
     // ✅ Get All Certifications
     getCertifications: builder.query({
       query: () => ({
-        url: "/certifications",
+        url: "/certificate",
         method: "GET",
       }),
+      providesTags: ["Certification"],
+    }),
+    getPublicCertifications: builder.query({
+      query: (profileId) => `/certificate/public/${profileId}`,
       providesTags: ["Certification"],
     }),
 
     // ✅ Create Certification
     createCertification: builder.mutation({
       query: (data) => ({
-        url: "/certifications",
+        url: "/certificate",
         method: "POST",
         body: data,
       }),
@@ -24,7 +28,7 @@ export const certificationApi = baseApi.injectEndpoints({
     // ✅ Update Certification
     updateCertification: builder.mutation({
       query: ({ id, ...data }) => ({
-        url: `/certifications/${id}`,
+        url: `/certificate/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -34,7 +38,7 @@ export const certificationApi = baseApi.injectEndpoints({
     // ✅ Delete Certification
     deleteCertification: builder.mutation({
       query: (id) => ({
-        url: `/certifications/${id}`,
+        url: `/certificate/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Certification"],
@@ -44,6 +48,7 @@ export const certificationApi = baseApi.injectEndpoints({
 
 export const {
   useGetCertificationsQuery,
+  useGetPublicCertificationsQuery,
   useCreateCertificationMutation,
   useUpdateCertificationMutation,
   useDeleteCertificationMutation,

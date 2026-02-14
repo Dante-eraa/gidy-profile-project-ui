@@ -1,4 +1,6 @@
 import { Formik, Form } from "formik";
+import { useSelector } from "react-redux";
+
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useCreateCareerVisionMutation } from "../../services/careerVisionApi";
@@ -43,6 +45,7 @@ const GROWTH_SPACE_OPTIONS = [
 export default function CareerVision() {
   const navigate = useNavigate();
   const [createCareerVision, { isLoading }] = useCreateCareerVisionMutation();
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className="min-h-screen bg-[#f5f6f8] flex items-center justify-center px-4">
@@ -61,7 +64,7 @@ export default function CareerVision() {
             try {
               await createCareerVision(values).unwrap();
               toast.success("Career Vision saved 🚀");
-              navigate("/user-profile");
+              navigate(`/profile/${user?.profile?.slug}`);
             } catch (err) {
               toast.error(err?.data?.message || "Something went wrong");
             }

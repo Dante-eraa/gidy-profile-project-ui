@@ -6,40 +6,32 @@ export default function FormModal({
   submitLabel = "ADD",
 }) {
   return (
-    <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-[1px]">
-      <div
-        className="
-          h-full
-          w-full
-          flex
-          items-center
-          justify-center
-          p-4
-        "
-      >
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm">
+      <div className="flex items-center justify-center min-h-screen px-4 py-6">
         <div
           className="
             w-full
-            max-w-130
+            max-w-lg
             bg-white
-            rounded-lg
-            shadow-[0_10px_35px_rgba(0,0,0,0.15)]
-            px-5 sm:px-[32px]
-            py-[24px] sm:py-[28px]
+            rounded-xl
+            shadow-xl
+            px-5 sm:px-8
+            py-6 sm:py-8
             max-h-[90vh]
             overflow-y-auto
+            animate-fadeIn
           "
         >
           {/* TITLE */}
-          <h2 className="text-[16px] font-semibold text-[#2F3A4C] mb-[24px]">
+          <h2 className="text-[16px] font-semibold text-[#2F3A4C] mb-6">
             {title}
           </h2>
 
           {/* BODY */}
-          <div className="space-y-[20px]">{children}</div>
+          <div className="space-y-5">{children}</div>
 
           {/* FOOTER */}
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-[12px] sm:gap-[16px] mt-[32px]">
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 mt-8">
             <button
               type="button"
               onClick={onClose}
@@ -49,7 +41,7 @@ export default function FormModal({
                 font-medium
                 text-[#5F6B7A]
                 hover:text-[#2F3A4C]
-                text-center
+                w-full sm:w-auto
               "
             >
               CANCEL
@@ -61,16 +53,17 @@ export default function FormModal({
               className="
                 min-w-[88px]
                 h-[36px]
-                px-[18px]
+                px-5
                 text-[13px]
                 font-medium
-                rounded-[6px]
+                rounded-md
                 bg-[#0059D6]
                 text-white
                 hover:bg-[#0047AB]
                 disabled:bg-[#BFD4F6]
                 flex items-center justify-center gap-2
                 transition-colors
+                w-full sm:w-auto
               "
             >
               {isSubmitting && (

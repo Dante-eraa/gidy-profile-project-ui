@@ -9,7 +9,7 @@ import {
   Settings,
 } from "lucide-react";
 
-export default function ProfileHeroCard({ profile, email }) {
+export default function ProfileHeroCard({ profile, email, isOwner }) {
   if (!profile) return null;
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
@@ -74,15 +74,18 @@ export default function ProfileHeroCard({ profile, email }) {
         </div>
 
         {/* Edit Button */}
-        <div className="absolute top-6 right-6">
-          <button
-            onClick={() => setOpen((prev) => !prev)}
-            className="p-2 rounded-full hover:bg-gray-100 transition"
-          >
-            <MoreVertical size={20} className="text-gray-500" />
-          </button>
-        </div>
-        {open && (
+        {isOwner && (
+          <div className="absolute top-6 right-6">
+            <button
+              onClick={() => setOpen((prev) => !prev)}
+              className="p-2 rounded-full hover:bg-gray-100 transition"
+            >
+              <MoreVertical size={20} className="text-gray-500" />
+            </button>
+          </div>
+        )}
+
+        {isOwner && open && (
           <div
             ref={menuRef}
             className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50"

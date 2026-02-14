@@ -5,7 +5,6 @@ import Profile from "./features/profile/Profile";
 import CareerVision from "./features/careerVision/CareerVision";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
-import Dashboard from "./features/dashboard/Dashboard";
 import ProfilePage from "./features/profile/ProfilePage";
 
 function App() {
@@ -15,8 +14,9 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
 
+      {/* Edit Profile */}
       <Route
-        path="/profile"
+        path="/edit-profile"
         element={
           <ProtectedRoute>
             <Profile />
@@ -24,6 +24,7 @@ function App() {
         }
       />
 
+      {/* Career Vision */}
       <Route
         path="/career-vision"
         element={
@@ -32,6 +33,8 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* Protected Layout Group */}
       <Route
         element={
           <ProtectedRoute>
@@ -39,8 +42,7 @@ function App() {
           </ProtectedRoute>
         }
       >
-        {" "}
-        <Route path="/user-profile" element={<ProfilePage />} />
+        <Route path="/profile/:slug" element={<ProfilePage />} />
       </Route>
     </Routes>
   );
