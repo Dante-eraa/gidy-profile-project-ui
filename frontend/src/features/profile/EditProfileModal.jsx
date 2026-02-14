@@ -7,11 +7,15 @@ import {
 import { useRef } from "react";
 import toast from "react-hot-toast";
 import { Pencil } from "lucide-react";
+import { useGenerateBioMutation } from "../../services/aiApi";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
   location: Yup.string().required("Location is required"),
+  role: Yup.string()
+    .oneOf(["FRESHER", "STUDENT", "GRADUATE", "PROFESSIONAL"])
+    .required("Role is required"),
   bio: Yup.string().max(500, "Maximum 500 characters allowed"),
   resume: Yup.mixed()
     .nullable()
@@ -27,6 +31,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
   const { data, isLoading } = useGetProfileQuery(undefined, {
     skip: !isOpen,
   });
+  const [generateBio, { isLoading: isGenerating }] = useGenerateBioMutation();
 
   const [updateProfile] = useUpdateProfileMutation();
 
@@ -44,6 +49,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
             firstName: profile.firstName || "",
             lastName: profile.lastName || "",
             location: profile.location || "",
+            role: profile.role || "STUDENT",
             bio: profile.bio || "",
             profileImage: null,
             resume: null,
@@ -56,6 +62,8 @@ export default function EditProfileModal({ isOpen, onClose }) {
               formData.append("firstName", values.firstName);
               formData.append("lastName", values.lastName);
               formData.append("location", values.location);
+              formData.append("role", values.role);
+
               formData.append("bio", values.bio || "");
 
               if (values.profileImage) {
@@ -194,15 +202,62 @@ export default function EditProfileModal({ isOpen, onClose }) {
                       </p>
                     )}
                   </div>
+                  {/* Role */}
+                  <div>
+                    <label className="text-[12px] text-gray-500">Role *</label>
+                    <select
+                      value={values.role}
+                      onChange={(e) => setFieldValue("role", e.target.value)}
+                      className={`w-full h-[36px] mt-1 px-3 border rounded-md bg-gray-50 text-sm focus:outline-none focus:border-[#0059D6]
+      ${errors.role && touched.role ? "border-red-500" : "border-gray-200"}`}
+                    >
+                      <option value="FRESHER">Fresher</option>
+                      <option value="STUDENT">Student</option>
+                      <option value="GRADUATE">Graduate</option>
+                      <option value="PROFESSIONAL">Professional</option>
+                    </select>
+
+                    {errors.role && touched.role && (
+                      <p className="text-[11px] text-red-500 mt-1">
+                        {errors.role}
+                      </p>
+                    )}
+                  </div>
 
                   {/* Bio */}
+                  {/* Bio */}
                   <div>
-                    <label className="text-[12px] text-gray-500 flex justify-between">
-                      Bio
-                      <span className="text-gray-400 text-[11px]">
-                        {values.bio.length}/500
-                      </span>
+                    <label className="text-[12px] text-gray-500 flex justify-between items-center">
+                      <span>Bio</span>
+
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-400 text-[11px]">
+                          {values.bio.length}/500
+                        </span>
+
+                        <button
+                          type="button"
+                          disabled={isGenerating}
+                          onClick={async () => {
+                            try {
+                              const res = await generateBio().unwrap();
+
+                              // backend returns:
+                              // { success: true, message: "...", data: "bio text" }
+
+                              setFieldValue("bio", res.data);
+                              toast.success("AI bio generated");
+                            } catch (error) {
+                              toast.error("AI generation failed");
+                            }
+                          }}
+                          className="text-[11px] font-medium text-[#0059D6] hover:underline disabled:opacity-50"
+                        >
+                          {isGenerating ? "Generating..." : "Generate with AI"}
+                        </button>
+                      </div>
                     </label>
+
                     <textarea
                       rows={4}
                       value={values.bio}

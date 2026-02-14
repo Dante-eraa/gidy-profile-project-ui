@@ -1,5 +1,6 @@
 import { MoreVertical, CirclePlus } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   useGetExperiencesQuery,
   useGetPublicExperiencesQuery,
@@ -13,9 +14,15 @@ export default function ExperienceCard({ profileId, isOwner }) {
     : useGetPublicExperiencesQuery(profileId);
 
   const experiences = data?.data || [];
-  const [openMenuId, setOpenMenuId] = useState(null);
 
-  const [deleteExperience] = useDeleteExperienceMutation();
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedExp, setSelectedExp] = useState(null);
+
+  const [deleteExperience, { isLoading: isDeleting }] =
+    useDeleteExperienceMutation();
+
   const formatEmploymentType = (type) => {
     if (!type) return "";
     return type
@@ -24,10 +31,6 @@ export default function ExperienceCard({ profileId, isOwner }) {
       .replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedExp, setSelectedExp] = useState(null);
-  const [deleteTarget, setDeleteTarget] = useState(null);
-
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -35,6 +38,7 @@ export default function ExperienceCard({ profileId, isOwner }) {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <div className="flex justify-between items-center mb-8">
           <h4 className="text-sm font-semibold text-gray-900">Experience</h4>
+
           {isOwner && (
             <CirclePlus
               size={18}
@@ -55,10 +59,8 @@ export default function ExperienceCard({ profileId, isOwner }) {
               </div>
 
               <div>
-                {/* Title */}
                 <h5 className="font-medium text-gray-900">{exp.title}</h5>
 
-                {/* Company + Employment Type + Location (Single Line) */}
                 <p className="text-sm text-gray-600">
                   {exp.company}
                   {exp.employmentType &&
@@ -66,7 +68,6 @@ export default function ExperienceCard({ profileId, isOwner }) {
                   {exp.location && ` • ${exp.location}`}
                 </p>
 
-                {/* Dates */}
                 <p className="text-xs text-gray-400 mt-1">
                   {new Date(exp.startDate).toLocaleDateString("en-US", {
                     month: "short",
@@ -109,22 +110,13 @@ export default function ExperienceCard({ profileId, isOwner }) {
                     </button>
 
                     <button
-                      onClick={async () => {
-                        try {
-                          await deleteExperience(deleteTarget.id).unwrap();
-                          toast.success("Experience deleted successfully");
-                          setDeleteTarget(null);
-                        } catch (error) {
-                          toast.error(
-                            error?.data?.message ||
-                              "Failed to delete experience",
-                          );
-                        }
+                      onClick={() => {
+                        setDeleteTarget(exp);
+                        setOpenMenuId(null);
                       }}
-                      disabled={isDeleting}
-                      className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md disabled:bg-red-300"
+                      className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50"
                     >
-                      {isDeleting ? "Deleting..." : "Delete"}
+                      Delete
                     </button>
                   </div>
                 )}
@@ -134,6 +126,7 @@ export default function ExperienceCard({ profileId, isOwner }) {
         ))}
       </div>
 
+      {/* Add/Edit Modal */}
       {isOpen && (
         <ExperienceModal
           isOpen={isOpen}
@@ -141,6 +134,8 @@ export default function ExperienceCard({ profileId, isOwner }) {
           experience={selectedExp}
         />
       )}
+
+      {/* Delete Confirmation Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-[1px]">
           <div className="w-[420px] bg-white rounded-lg shadow-lg p-6">
@@ -164,12 +159,20 @@ export default function ExperienceCard({ profileId, isOwner }) {
 
               <button
                 onClick={async () => {
-                  await deleteExperience(deleteTarget.id).unwrap();
-                  setDeleteTarget(null);
+                  try {
+                    await deleteExperience(deleteTarget.id).unwrap();
+                    toast.success("Experience deleted successfully");
+                    setDeleteTarget(null);
+                  } catch (error) {
+                    toast.error(
+                      error?.data?.message || "Failed to delete experience",
+                    );
+                  }
                 }}
-                className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md"
+                disabled={isDeleting}
+                className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md disabled:bg-red-300"
               >
-                Delete
+                {isDeleting ? "Deleting..." : "Delete"}
               </button>
             </div>
           </div>

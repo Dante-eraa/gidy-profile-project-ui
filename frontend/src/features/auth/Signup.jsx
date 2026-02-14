@@ -168,7 +168,10 @@ export default function Signup() {
         {/* Footer */}
         <p className="text-sm text-center text-gray-500 mt-6">
           Already have an account?{" "}
-          <span className="text-blue-600 cursor-pointer hover:underline">
+          <span
+            onClick={() => navigate("/login")}
+            className="text-blue-600 cursor-pointer hover:underline"
+          >
             Log in
           </span>
         </p>

@@ -12,6 +12,7 @@ import {
   Twitter,
   Globe,
   Pencil,
+  Mail,
 } from "lucide-react";
 import EditProfileModal from "./EditProfileModal";
 import CareerVisionModal from "../careerVision/CareerVisionModal";
@@ -199,13 +200,18 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center mt-8 gap-6 w-full">
         {/* Email + Resume */}
         <div className="w-full md:w-auto text-center md:text-left">
-          <p className="text-sm text-blue-600 break-all">{email}</p>
+          <p className="text-md text-blue-600 break-all flex gap-2 items-center ">
+            <Mail className="w-5" />
+            {email}
+          </p>
 
           {
             <a
-              href={profile.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={profile.resumeUrl.replace(
+                "/upload/",
+                "/upload/fl_attachment/",
+              )}
+              download
               className="inline-flex items-center gap-2 mt-3 bg-blue-100 text-blue-700 px-4 py-2 rounded-md text-sm hover:bg-blue-200 transition"
             >
               <Download size={16} />
@@ -217,24 +223,31 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
         {/* League Section */}
         <div className="w-full md:w-auto flex flex-col items-center md:items-end gap-3">
           {/* League Box */}
-          <div className="w-full md:w-auto bg-gray-50 border border-gray-200 rounded-2xl px-4 py-4 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 text-sm">
+          <div className="w-full md:w-auto bg-gray-50 border border-gray-200 rounded-md px-4 py-0 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 text-sm">
             {/* Placeholder League Icon */}
-            <div className="w-8 h-8 bg-yellow-400 rounded-full flex-shrink-0" />
+            <div>
+              {" "}
+              <img
+                className="h-20"
+                src="https://d2d0jobwzy0nc3.cloudfront.net/leagues/league-mhabbrl1lralz2?v=1771063753561"
+                alt="League Logo"
+              />
+            </div>
 
             <div className="flex gap-6">
-              <div>
+              <div className="flex gap-2 items-center">
                 <p className="text-gray-400 text-xs">League</p>
-                <p className="font-medium text-gray-800">Bronze</p>
+                <p className="font-normal text-lg text-gray-800">Bronze</p>
               </div>
 
-              <div>
+              <div className="flex gap-2 items-center">
                 <p className="text-gray-400 text-xs">Rank</p>
-                <p className="font-medium text-gray-800">24</p>
+                <p className="font-normal text-lg text-gray-800">24</p>
               </div>
 
-              <div>
+              <div className="flex gap-2 items-center">
                 <p className="text-gray-400 text-xs">Points</p>
-                <p className="font-medium text-gray-800">100</p>
+                <p className="font-normal text-lg text-gray-800">100</p>
               </div>
             </div>
           </div>

@@ -54,10 +54,9 @@ export default function ProfileCompletionCard({ profile }) {
           <CheckCircle className="text-green-500" size={22} />
         </div>
       ) : (
-        // 🚀 LEVEL UP UI
         <div>
           <h4 className="text-sm font-semibold text-gray-900">
-            🚀 Level Up Profile
+            🎓 Level Up Profile
           </h4>
 
           <p className="text-sm text-gray-500 mt-1">
