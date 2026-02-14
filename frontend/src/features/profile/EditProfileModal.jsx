@@ -6,7 +6,7 @@ import {
 } from "../../services/profileApi";
 import { useRef } from "react";
 import toast from "react-hot-toast";
-import { Pencil } from "lucide-react";
+import { Pencil, Sparkle } from "lucide-react";
 import { useGenerateBioMutation } from "../../services/aiApi";
 
 const validationSchema = Yup.object({
@@ -251,8 +251,9 @@ export default function EditProfileModal({ isOpen, onClose }) {
                               toast.error("AI generation failed");
                             }
                           }}
-                          className="text-[11px] font-medium text-[#0059D6] hover:underline disabled:opacity-50"
+                          className="text-[11px] font-medium text-[#0059D6] hover:underline disabled:opacity-50 flex items-center gap-1"
                         >
+                          <Sparkle className="w-4 text-amber-300" />
                           {isGenerating ? "Generating..." : "Generate with AI"}
                         </button>
                       </div>
