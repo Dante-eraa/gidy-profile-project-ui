@@ -44,7 +44,7 @@ export default function ProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* LEFT COLUMN */}
         <div className="space-y-6 lg:col-span-1">
-          {isOwner && <ProfileCompletionCard />}
+          {isOwner && <ProfileCompletionCard profile={profile} />}
 
           <SkillsCard profileId={profile?.id} isOwner={isOwner} />
         </div>

@@ -7,12 +7,45 @@ import {
   Instagram,
   Target,
   Settings,
+  Linkedin,
+  Github,
+  Twitter,
+  Globe,
+  Pencil,
 } from "lucide-react";
+import EditProfileModal from "./EditProfileModal";
+import CareerVisionModal from "../careerVision/CareerVisionModal";
+import SocialLinkModal from "../socialLink/SocialLinkModal";
+import { useGetSocialLinksQuery } from "../../services/socialLinkApi";
+import EditSocialLinkModal from "../socialLink/EditSocialLinkModal";
 
 export default function ProfileHeroCard({ profile, email, isOwner }) {
   if (!profile) return null;
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isCareerOpen, setIsCareerOpen] = useState(false);
+  const [isSocialOpen, setIsSocialOpen] = useState(false);
+  const [isEditSocialOpen, setIsEditSocialOpen] = useState(false);
+
+  const { data: socialData } = useGetSocialLinksQuery(undefined, {
+    skip: !isOwner,
+  });
+  const getIcon = (platform) => {
+    switch (platform) {
+      case "LINKEDIN":
+        return <Linkedin size={18} />;
+      case "GITHUB":
+        return <Github size={18} />;
+      case "TWITTER":
+        return <Twitter size={18} />;
+      case "PORTFOLIO":
+        return <Globe size={18} />;
+      default:
+        return <Globe size={18} />;
+    }
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -22,9 +55,12 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  function DropdownItem({ icon, label }) {
+  function DropdownItem({ icon, label, onClick }) {
     return (
-      <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition">
+      <button
+        onClick={onClick}
+        className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+      >
         <span className="text-blue-500">{icon}</span>
         {label}
       </button>
@@ -49,7 +85,6 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
               profile.firstName?.charAt(0).toUpperCase()
             )}
           </div>
-
           {/* Name + Details */}
           <div className="w-full">
             <h2 className="text-lg md:text-xl font-semibold text-gray-900 break-words">
@@ -60,40 +95,101 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
                 </span>
               )}
             </h2>
-
             {profile.location && (
               <p className="text-sm text-gray-500 mt-1">{profile.location}</p>
             )}
-
             {profile.bio && (
               <p className="text-sm text-gray-600 mt-3 leading-relaxed">
                 {profile.bio}
               </p>
             )}
+
+            {socialData?.data?.length > 0 && (
+              <div className="flex gap-3 mt-3 justify-center md:justify-start">
+                {socialData.data.map((item) => (
+                  <a
+                    key={item.id}
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-500 hover:text-[#0059d6] transition"
+                  >
+                    {getIcon(item.platform)}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
         {/* Edit Button */}
-        {isOwner && (
-          <div className="absolute top-6 right-6">
-            <button
-              onClick={() => setOpen((prev) => !prev)}
-              className="p-2 rounded-full hover:bg-gray-100 transition"
-            >
-              <MoreVertical size={20} className="text-gray-500" />
-            </button>
-          </div>
-        )}
+        {/* RIGHT ACTIONS */}
+        <div className="flex  gap-3 ml-auto">
+          {/* Social Icons */}
+          {socialData?.data?.length > 0 &&
+            socialData.data.map((item) => (
+              <a
+                key={item.id}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-500 hover:text-[#0059d6] transition p-2"
+              >
+                {getIcon(item.platform)}
+              </a>
+            ))}
+
+          {/* More Menu */}
+          {isOwner && (
+            <div className="relative" ref={menuRef}>
+              <button
+                onClick={() => setOpen((prev) => !prev)}
+                className="p-2 rounded-full hover:bg-gray-100 transition"
+              >
+                <MoreVertical size={20} className="text-gray-500" />
+              </button>
+            </div>
+          )}
+        </div>
 
         {isOwner && open && (
           <div
             ref={menuRef}
             className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50"
           >
-            <DropdownItem icon={<User size={16} />} label="Edit Profile" />
+            <DropdownItem
+              icon={<User size={16} />}
+              label="Edit Profile"
+              onClick={() => {
+                setOpen(false);
+                setIsEditOpen(true);
+              }}
+            />
             <DropdownItem icon={<Share2 size={16} />} label="Share Profile" />
-            <DropdownItem icon={<Instagram size={16} />} label="Add Socials" />
-            <DropdownItem icon={<Target size={16} />} label="Career Vision" />
+            <DropdownItem
+              icon={<Instagram size={16} />}
+              label="Add Socials"
+              onClick={() => {
+                setOpen(false);
+                setIsSocialOpen(true);
+              }}
+            />
+            <DropdownItem
+              icon={<Pencil size={16} />}
+              label="Edit Social Links"
+              onClick={() => {
+                setOpen(false);
+                setIsEditSocialOpen(true);
+              }}
+            />
+            <DropdownItem
+              icon={<Target size={16} />}
+              label="Career Vision"
+              onClick={() => {
+                setOpen(false);
+                setIsCareerOpen(true);
+              }}
+            />
             <DropdownItem icon={<Settings size={16} />} label="Settings" />
           </div>
         )}
@@ -148,6 +244,24 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
           </button>
         </div>
       </div>
+      <EditProfileModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        profile={profile}
+      />
+      <CareerVisionModal
+        isOpen={isCareerOpen}
+        onClose={() => setIsCareerOpen(false)}
+      />
+      <SocialLinkModal
+        isOpen={isSocialOpen}
+        onClose={() => setIsSocialOpen(false)}
+      />
+      <EditSocialLinkModal
+        isOpen={isEditSocialOpen}
+        onClose={() => setIsEditSocialOpen(false)}
+        editMode={true}
+      />
     </div>
   );
 }

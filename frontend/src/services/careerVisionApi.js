@@ -13,10 +13,22 @@ export const careerVisionApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["CareerVision"],
+      invalidatesTags: ["CareerVision", "PublicProfile"],
+    }),
+
+    updateCareerVision: builder.mutation({
+      query: (data) => ({
+        url: "/career-vision",
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["CareerVision", "PublicProfile"],
     }),
   }),
 });
 
-export const { useGetCareerVisionQuery, useCreateCareerVisionMutation } =
-  careerVisionApi;
+export const {
+  useGetCareerVisionQuery,
+  useCreateCareerVisionMutation,
+  useUpdateCareerVisionMutation,
+} = careerVisionApi;

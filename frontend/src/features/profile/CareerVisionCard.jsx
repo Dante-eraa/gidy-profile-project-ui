@@ -14,8 +14,8 @@ export default function CareerVisionCard({ careerVision }) {
           </h3>
         </div>
 
-        <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center">
-          <Sparkles size={18} className="text-orange-500" />
+        <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
+          ✨
         </div>
       </div>
 
