@@ -201,11 +201,11 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
         {/* Email + Resume */}
         <div className="w-full md:w-auto text-center md:text-left">
           <p className="text-md text-blue-600 break-all flex gap-2 items-center ">
-            <Mail className="w-5" />
+            {isOwner && <Mail className="w-5" />}
             {email}
           </p>
 
-          {
+          {profile?.resumeUrl && (
             <a
               href={profile.resumeUrl.replace(
                 "/upload/",
@@ -217,7 +217,7 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
               <Download size={16} />
               Download Resume
             </a>
-          }
+          )}
         </div>
 
         {/* League Section */}

@@ -52,7 +52,7 @@ export default function InputField({
   if (type === "select") {
     return (
       <div>
-        <label className="block text-[13px] font-medium text-[#5F6B7A] mb-[6px]">
+        <label className="block text-[13px] font-medium  text-gray-400 mb-[6px]">
           {label}
           {required && <span className="text-[#E5484D]"> *</span>}
         </label>
@@ -85,7 +85,7 @@ export default function InputField({
   // ------------------------
   return (
     <div>
-      <label className="block text-[13px] font-medium text-[#5F6B7A] mb-[6px]">
+      <label className="block text-[13px] font-medium  text-gray-400 mb-[6px]">
         {label}
         {required && <span className="text-[#E5484D]"> *</span>}
       </label>

@@ -23,7 +23,7 @@ export default function FormModal({
           "
         >
           {/* TITLE */}
-          <h2 className="text-[16px] font-semibold text-[#2F3A4C] mb-6">
+          <h2 className="text-[16px] font-semibold text-gray-400 mb-6">
             {title}
           </h2>
 
