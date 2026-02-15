@@ -30,7 +30,16 @@ export default function CertificationCard({ profileId, isOwner }) {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col gap-1 justify-center items-center py-10">
+          <div className="w-8 h-8 border-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>{" "}
+          <p className="text-gray-500 text-sm">Loading Certificate...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
