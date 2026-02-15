@@ -6,7 +6,7 @@ import {
 } from "../../services/profileApi";
 import { useRef } from "react";
 import toast from "react-hot-toast";
-import { Pencil } from "lucide-react";
+import { Pencil, Sparkle, Upload } from "lucide-react";
 import { useGenerateBioMutation } from "../../services/aiApi";
 
 const validationSchema = Yup.object({
@@ -241,18 +241,15 @@ export default function EditProfileModal({ isOpen, onClose }) {
                           onClick={async () => {
                             try {
                               const res = await generateBio().unwrap();
-
-                              // backend returns:
-                              // { success: true, message: "...", data: "bio text" }
-
-                              setFieldValue("bio", res.data);
+                              setFieldValue("bio", res.data ?? "", true);
                               toast.success("AI bio generated");
                             } catch (error) {
                               toast.error("AI generation failed");
                             }
                           }}
-                          className="text-[11px] font-medium text-[#0059D6] hover:underline disabled:opacity-50"
+                          className="text-[11px] font-medium text-[#0059D6] hover:underline disabled:opacity-50 flex items-center gap-1"
                         >
+                          <Sparkle className="w-4 text-amber-300" />
                           {isGenerating ? "Generating..." : "Generate with AI"}
                         </button>
                       </div>
@@ -267,23 +264,57 @@ export default function EditProfileModal({ isOpen, onClose }) {
                   </div>
 
                   {/* Resume */}
+                  {/* Resume Upload */}
                   <div>
                     <label className="text-[12px] text-gray-500">
                       Resume (PDF only)
                     </label>
+
+                    <div
+                      onClick={() => fileRef.current?.click()}
+                      className="mt-2 flex items-center justify-between px-4 py-3 border border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 rounded-md">
+                          <Upload className="w-4 h-4 text-blue-600" />
+                        </div>
+
+                        <div>
+                          <p className="text-sm text-gray-700">
+                            {values.resume
+                              ? values.resume.name
+                              : "Click to upload resume"}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Only PDF files allowed
+                          </p>
+                        </div>
+                      </div>
+
+                      {values.resume && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setFieldValue("resume", null);
+                          }}
+                          className="text-xs text-red-500 hover:underline"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+
                     <input
                       type="file"
+                      ref={fileRef}
                       accept="application/pdf"
+                      className="hidden"
                       onChange={(e) =>
                         setFieldValue("resume", e.currentTarget.files[0])
                       }
-                      className="mt-1 text-sm"
                     />
-                    {values.resume && (
-                      <p className="text-[11px] text-gray-600 mt-1">
-                        Selected: {values.resume.name}
-                      </p>
-                    )}
+
                     {errors.resume && (
                       <p className="text-[11px] text-red-500 mt-1">
                         {errors.resume}
@@ -304,7 +335,9 @@ export default function EditProfileModal({ isOpen, onClose }) {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="px-4 py-1.5 text-[12px] font-medium bg-[#0059D6] text-white rounded-md hover:bg-[#0047AB]"
+                      className="px-4 py-1.5 text-[12px] font-medium bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200"
                     >
                       {isSubmitting ? "Updating..." : "UPDATE"}
                     </button>

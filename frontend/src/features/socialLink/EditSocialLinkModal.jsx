@@ -96,7 +96,9 @@ export default function EditSocialLinkModal({ isOpen, onClose }) {
 
           <button
             onClick={onClose}
-            className="bg-[#0059d6] text-white px-5 py-2 rounded-md text-sm hover:bg-[#0047ab]"
+            className=" px-5 py-2 rounded-md text-sm bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200"
           >
             DONE
           </button>

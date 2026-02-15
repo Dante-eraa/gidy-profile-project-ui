@@ -13,7 +13,7 @@ export const skillApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Skill"],
+      invalidatesTags: ["Skill", "PublicProfile"],
     }),
 
     deleteSkill: builder.mutation({
@@ -21,7 +21,7 @@ export const skillApi = baseApi.injectEndpoints({
         url: `/skill/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Skill"],
+      invalidatesTags: ["Skill", "PublicProfile"],
     }),
 
     endorseSkill: builder.mutation({
@@ -29,7 +29,7 @@ export const skillApi = baseApi.injectEndpoints({
         url: `/skill/endorse/${skillId}`,
         method: "POST",
       }),
-      invalidatesTags: ["Skill"],
+      invalidatesTags: ["Skill", "PublicProfile"],
     }),
 
     removeEndorsement: builder.mutation({
@@ -37,7 +37,7 @@ export const skillApi = baseApi.injectEndpoints({
         url: `/skill/endorse/${skillId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Skill"],
+      invalidatesTags: ["Skill", "PublicProfile"],
     }),
   }),
 });

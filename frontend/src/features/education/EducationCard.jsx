@@ -1,4 +1,4 @@
-import { MoreVertical, CirclePlus } from "lucide-react";
+import { MoreVertical, CirclePlus, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -90,15 +90,16 @@ export default function EducationCard({ profileId, isOwner }) {
                 />
 
                 {openMenuId === edu.id && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md z-10">
+                  <div className="absolute right-0 md:left-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md z-10">
                     <button
                       onClick={() => {
                         setSelectedEdu(edu);
                         setIsOpen(true);
                         setOpenMenuId(null);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50"
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex gap-1 items-center text-[#4285f4]"
                     >
+                      <Pencil className="w-4" />
                       Edit
                     </button>
 
@@ -107,8 +108,9 @@ export default function EducationCard({ profileId, isOwner }) {
                         setDeleteTarget(edu);
                         setOpenMenuId(null);
                       }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50"
+                      className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 flex gap-1 items-center "
                     >
+                      <Trash className="w-4" />
                       Delete
                     </button>
                   </div>

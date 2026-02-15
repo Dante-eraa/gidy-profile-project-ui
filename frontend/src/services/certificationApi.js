@@ -22,7 +22,7 @@ export const certificationApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Certification"],
+      invalidatesTags: ["Certification", "PublicProfile"],
     }),
 
     // ✅ Update Certification
@@ -32,7 +32,7 @@ export const certificationApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Certification"],
+      invalidatesTags: ["Certification", "PublicProfile"],
     }),
 
     // ✅ Delete Certification
@@ -41,7 +41,7 @@ export const certificationApi = baseApi.injectEndpoints({
         url: `/certificate/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Certification"],
+      invalidatesTags: ["Certification", "PublicProfile"],
     }),
   }),
 });

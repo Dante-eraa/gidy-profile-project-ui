@@ -1,5 +1,13 @@
-import { MoreVertical, CirclePlus } from "lucide-react";
+import {
+  MoreVertical,
+  CirclePlus,
+  Pencil,
+  Trash,
+  Building,
+  Building2,
+} from "lucide-react";
 import { useState } from "react";
+import { useMemo } from "react";
 import toast from "react-hot-toast";
 import {
   useGetExperiencesQuery,
@@ -19,6 +27,11 @@ export default function ExperienceCard({ profileId, isOwner }) {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedExp, setSelectedExp] = useState(null);
+  const sortedExperiences = useMemo(() => {
+    return [...experiences].sort(
+      (a, b) => new Date(b.startDate) - new Date(a.startDate),
+    );
+  }, [experiences]);
 
   const [deleteExperience, { isLoading: isDeleting }] =
     useDeleteExperienceMutation();
@@ -50,80 +63,113 @@ export default function ExperienceCard({ profileId, isOwner }) {
             />
           )}
         </div>
+        <div className="relative">
+          {/* Vertical Line */}
+          <div className="absolute left-2 top-0 h-full w-[2px] bg-gray-200"></div>
 
-        {experiences.map((exp) => (
-          <div key={exp.id} className="flex justify-between items-start mb-4">
-            <div className="flex gap-4">
-              <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-500 font-semibold">
-                🏢
+          {sortedExperiences.map((exp) => (
+            <div
+              key={exp.id}
+              className="relative flex items-center gap-6 pb-10 group"
+            >
+              {/* Timeline Dot */}
+              <div className="relative z-10 ">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 transition-all duration-300 
+            ${
+              exp.isCurrentlyWorking
+                ? "bg-blue-500 border-blue-500 scale-110"
+                : "bg-white border-gray-300 group-hover:border-blue-400"
+            }`}
+                ></div>
               </div>
 
-              <div>
-                <h5 className="font-medium text-gray-900">{exp.title}</h5>
+              {/* Card */}
+              <div className="flex-1 bg-gray-50 hover:bg-white border border-transparent hover:border-gray-200 rounded-xl p-5 transition-all duration-300 hover:shadow-md">
+                <div className="flex justify-between items-start">
+                  {/* Left Content */}
+                  <div className="flex gap-4">
+                    <div className="hidden sm:flex w-12 h-12 bg-sky-100 rounded-lg items-center justify-center text-gray-700 font-semibold">
+                      <Building2 className="w-6" />
+                    </div>
 
-                <p className="text-sm text-gray-600">
-                  {exp.company}
-                  {exp.employmentType &&
-                    ` • ${formatEmploymentType(exp.employmentType)}`}
-                  {exp.location && ` • ${exp.location}`}
-                </p>
+                    <div>
+                      <h5 className="font-semibold text-gray-900 text-sm sm:text-base">
+                        {exp.title}
+                      </h5>
 
-                <p className="text-xs text-gray-400 mt-1">
-                  {new Date(exp.startDate).toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                  })}{" "}
-                  –{" "}
-                  {exp.isCurrentlyWorking
-                    ? "Present"
-                    : exp.endDate
-                      ? new Date(exp.endDate).toLocaleDateString("en-US", {
+                      <p className="text-xs sm:text-sm text-gray-600">
+                        {exp.company}
+                        {exp.employmentType &&
+                          ` • ${formatEmploymentType(exp.employmentType)}`}
+                        {exp.location && ` • ${exp.location}`}
+                      </p>
+
+                      <p className="text-xs text-gray-400 mt-1">
+                        {new Date(exp.startDate).toLocaleDateString("en-US", {
                           month: "short",
                           year: "numeric",
-                        })
-                      : ""}
-                </p>
+                        })}{" "}
+                        –{" "}
+                        {exp.isCurrentlyWorking
+                          ? "Present"
+                          : exp.endDate
+                            ? new Date(exp.endDate).toLocaleDateString(
+                                "en-US",
+                                {
+                                  month: "short",
+                                  year: "numeric",
+                                },
+                              )
+                            : ""}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Owner Menu */}
+                  {isOwner && (
+                    <div className="relative">
+                      <MoreVertical
+                        size={18}
+                        className="text-gray-400 cursor-pointer hover:text-gray-600"
+                        onClick={() =>
+                          setOpenMenuId(openMenuId === exp.id ? null : exp.id)
+                        }
+                      />
+
+                      {openMenuId === exp.id && (
+                        <div className="absolute right-0 md:left-0   mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md z-10">
+                          <button
+                            onClick={() => {
+                              setSelectedExp(exp);
+                              setIsOpen(true);
+                              setOpenMenuId(null);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 flex gap-1 items-center text-[#4285f4]"
+                          >
+                            <Pencil className="w-4" />
+                            Edit
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setDeleteTarget(exp);
+                              setOpenMenuId(null);
+                            }}
+                            className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 flex gap-1 items-center"
+                          >
+                            <Trash className="w-4" />
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-
-            {isOwner && (
-              <div className="relative">
-                <MoreVertical
-                  size={18}
-                  className="text-gray-400 cursor-pointer"
-                  onClick={() =>
-                    setOpenMenuId(openMenuId === exp.id ? null : exp.id)
-                  }
-                />
-
-                {openMenuId === exp.id && (
-                  <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-md z-10">
-                    <button
-                      onClick={() => {
-                        setSelectedExp(exp);
-                        setIsOpen(true);
-                        setOpenMenuId(null);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      onClick={() => {
-                        setDeleteTarget(exp);
-                        setOpenMenuId(null);
-                      }}
-                      className="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Add/Edit Modal */}

@@ -27,9 +27,6 @@ export default function InputField({
   const errorBorder = "border-[#E5484D]";
   const disabledStyle = "bg-gray-100 text-gray-400 cursor-not-allowed";
 
-  // ------------------------
-  // CHECKBOX
-  // ------------------------
   if (type === "checkbox") {
     return (
       <div>
@@ -46,9 +43,6 @@ export default function InputField({
     );
   }
 
-  // ------------------------
-  // SELECT
-  // ------------------------
   if (type === "select") {
     return (
       <div>
@@ -80,9 +74,6 @@ export default function InputField({
     );
   }
 
-  // ------------------------
-  // INPUT (default)
-  // ------------------------
   return (
     <div>
       <label className="block text-[13px] font-medium  text-gray-400 mb-[6px]">

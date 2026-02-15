@@ -20,7 +20,7 @@ export const educationApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Education"],
+      invalidatesTags: ["Education", "PublicProfile"],
     }),
 
     updateEducation: builder.mutation({
@@ -29,7 +29,7 @@ export const educationApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Education"],
+      invalidatesTags: ["Education", "PublicProfile"],
     }),
 
     deleteEducation: builder.mutation({
@@ -37,7 +37,7 @@ export const educationApi = baseApi.injectEndpoints({
         url: `/education/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Education"],
+      invalidatesTags: ["Education", "PublicProfile"],
     }),
   }),
 });

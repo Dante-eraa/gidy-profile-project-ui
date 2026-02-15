@@ -21,7 +21,7 @@ export const experienceApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["Experience"],
+      invalidatesTags: ["Experience", "PublicProfile"],
     }),
 
     updateExperience: builder.mutation({
@@ -30,7 +30,7 @@ export const experienceApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: ["Experience"],
+      invalidatesTags: ["Experience", "PublicProfile"],
     }),
 
     deleteExperience: builder.mutation({
@@ -38,7 +38,7 @@ export const experienceApi = baseApi.injectEndpoints({
         url: `/experience/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Experience"],
+      invalidatesTags: ["Experience", "PublicProfile"],
     }),
   }),
 });
