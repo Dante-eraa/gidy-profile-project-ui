@@ -77,6 +77,64 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
 
   return (
     <div className="relative bg-white rounded-3xl shadow-sm border border-gray-100 p-6 w-full">
+      {/* Top Right More Menu */}
+      {isOwner && (
+        <div className="absolute top-4 right-4" ref={menuRef}>
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            className="p-2 rounded-full hover:bg-gray-100 transition"
+          >
+            <MoreVertical size={20} className="text-gray-500" />
+          </button>
+
+          {open && (
+            <div className="absolute right-0 top-full mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50">
+              <DropdownItem
+                icon={<User size={16} />}
+                label="Edit Profile"
+                onClick={() => {
+                  setOpen(false);
+                  setIsEditOpen(true);
+                }}
+              />
+              <DropdownItem
+                icon={<Share2 size={16} />}
+                label="Share Profile"
+                onClick={() => {
+                  setOpen(false);
+                  setIsShareOpen(true);
+                }}
+              />
+              <DropdownItem
+                icon={<Instagram size={16} />}
+                label="Add Socials"
+                onClick={() => {
+                  setOpen(false);
+                  setIsSocialOpen(true);
+                }}
+              />
+              <DropdownItem
+                icon={<Pencil size={16} />}
+                label="Edit Social Links"
+                onClick={() => {
+                  setOpen(false);
+                  setIsEditSocialOpen(true);
+                }}
+              />
+              <DropdownItem
+                icon={<Target size={16} />}
+                label="Career Vision"
+                onClick={() => {
+                  setOpen(false);
+                  setIsCareerOpen(true);
+                }}
+              />
+              <DropdownItem icon={<Settings size={16} />} label="Settings" />
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ================= TOP SECTION ================= */}
       <div className="flex flex-col md:flex-row md:justify-between gap-6">
         {/* LEFT SIDE */}
@@ -129,86 +187,6 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
             )}
           </div>
         </div>
-
-        {/* Edit Button */}
-        {/* RIGHT ACTIONS */}
-        <div className="flex  gap-3 ml-auto">
-          {/* Social Icons */}
-          {socialData?.data?.length > 0 &&
-            socialData.data.map((item) => (
-              <a
-                key={item.id}
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-[#0059d6] transition p-2"
-              >
-                {getIcon(item.platform)}
-              </a>
-            ))}
-
-          {/* More Menu */}
-          {isOwner && (
-            <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setOpen((prev) => !prev)}
-                className="p-2 rounded-full hover:bg-gray-100 transition"
-              >
-                <MoreVertical size={20} className="text-gray-500" />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {isOwner && open && (
-          <div
-            ref={menuRef}
-            className="absolute right-0 lg:-right-20 top-10 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50"
-          >
-            <DropdownItem
-              icon={<User size={16} />}
-              label="Edit Profile"
-              onClick={() => {
-                setOpen(false);
-                setIsEditOpen(true);
-              }}
-            />
-            <DropdownItem
-              icon={<Share2 size={16} />}
-              label="Share Profile"
-              onClick={() => {
-                setOpen(false);
-                setIsShareOpen(true);
-              }}
-            />
-
-            <DropdownItem
-              icon={<Instagram size={16} />}
-              label="Add Socials"
-              onClick={() => {
-                setOpen(false);
-                setIsSocialOpen(true);
-              }}
-            />
-            <DropdownItem
-              icon={<Pencil size={16} />}
-              label="Edit Social Links"
-              onClick={() => {
-                setOpen(false);
-                setIsEditSocialOpen(true);
-              }}
-            />
-            <DropdownItem
-              icon={<Target size={16} />}
-              label="Career Vision"
-              onClick={() => {
-                setOpen(false);
-                setIsCareerOpen(true);
-              }}
-            />
-            <DropdownItem icon={<Settings size={16} />} label="Settings" />
-          </div>
-        )}
       </div>
 
       {/* ================= BOTTOM SECTION ================= */}

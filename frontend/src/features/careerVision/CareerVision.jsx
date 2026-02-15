@@ -64,7 +64,7 @@ export default function CareerVision() {
             try {
               await createCareerVision(values).unwrap();
               toast.success("Career Vision saved 🚀");
-              navigate(`/profile/${user?.profile?.slug}`);
+              navigate(`/profile/${user?.profile?.slug}`, { replace: true });
             } catch (err) {
               toast.error(err?.data?.message || "Something went wrong");
             }
