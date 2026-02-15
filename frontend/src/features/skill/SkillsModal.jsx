@@ -100,7 +100,10 @@ export default function SkillsModal({ isOpen, onClose, skills = [], isOwner }) {
             <button
               onClick={handleAddSkill}
               disabled={isCreating}
-              className="bg-blue-600 text-white text-sm px-5 py-2 rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+              className=" text-sm px-5 py-2 rounded-md bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200
+                    disabled:bg-sky-300"
             >
               {isCreating ? "Adding..." : "Add"}
             </button>

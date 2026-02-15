@@ -131,7 +131,7 @@ export default function Login() {
                active:scale-[0.99]
                transition-all duration-200"
           >
-            {isLoading ? "Creating..." : "Continue"}
+            {isLoading ? "Login..." : "Continue"}
           </button>
         </form>
 

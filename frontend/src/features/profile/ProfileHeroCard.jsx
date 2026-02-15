@@ -13,12 +13,14 @@ import {
   Globe,
   Pencil,
   Mail,
+  ChevronRight,
 } from "lucide-react";
 import EditProfileModal from "./EditProfileModal";
 import CareerVisionModal from "../careerVision/CareerVisionModal";
 import SocialLinkModal from "../socialLink/SocialLinkModal";
 import { useGetSocialLinksQuery } from "../../services/socialLinkApi";
 import EditSocialLinkModal from "../socialLink/EditSocialLinkModal";
+import ShareProfileModal from "./ShareProfileModal";
 
 export default function ProfileHeroCard({ profile, email, isOwner }) {
   if (!profile) return null;
@@ -28,6 +30,7 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
   const [isCareerOpen, setIsCareerOpen] = useState(false);
   const [isSocialOpen, setIsSocialOpen] = useState(false);
   const [isEditSocialOpen, setIsEditSocialOpen] = useState(false);
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const { data: socialData } = useGetSocialLinksQuery(undefined, {
     skip: !isOwner,
@@ -45,6 +48,10 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
       default:
         return <Globe size={18} />;
     }
+  };
+  const formatRole = (role) => {
+    if (!role) return "";
+    return role.charAt(0) + role.slice(1).toLowerCase();
   };
 
   useEffect(() => {
@@ -91,8 +98,8 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
             <h2 className="text-lg md:text-xl font-semibold text-gray-900 break-words">
               {profile.firstName} {profile.lastName}
               {profile.role && (
-                <span className="block md:inline text-sm text-gray-500 md:ml-2 font-normal">
-                  ({profile.role})
+                <span className="block md:inline text-sm text-gray-700 md:ml-2 font-normal">
+                  ({formatRole(profile.role)})
                 </span>
               )}
             </h2>
@@ -166,7 +173,15 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
                 setIsEditOpen(true);
               }}
             />
-            <DropdownItem icon={<Share2 size={16} />} label="Share Profile" />
+            <DropdownItem
+              icon={<Share2 size={16} />}
+              label="Share Profile"
+              onClick={() => {
+                setOpen(false);
+                setIsShareOpen(true);
+              }}
+            />
+
             <DropdownItem
               icon={<Instagram size={16} />}
               label="Add Socials"
@@ -223,37 +238,37 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
         {/* League Section */}
         <div className="w-full md:w-auto flex flex-col items-center md:items-end gap-3">
           {/* League Box */}
-          <div className="w-full md:w-auto bg-gray-50 border border-gray-200 rounded-md px-4 py-0 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 text-sm">
+          <div className="w-full md:w-auto bg-gray-50 border border-gray-200 rounded-md px-2 py-0 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-6 text-sm">
             {/* Placeholder League Icon */}
             <div>
               {" "}
               <img
-                className="h-20"
+                className="h-15"
                 src="https://d2d0jobwzy0nc3.cloudfront.net/leagues/league-mhabbrl1lralz2?v=1771063753561"
                 alt="League Logo"
               />
             </div>
 
             <div className="flex gap-6">
-              <div className="flex gap-2 items-center">
+              <div className="flex flex-col gap-1 items-center">
                 <p className="text-gray-400 text-xs">League</p>
                 <p className="font-normal text-lg text-gray-800">Bronze</p>
               </div>
 
-              <div className="flex gap-2 items-center">
+              <div className="flex flex-col gap-1 items-center">
                 <p className="text-gray-400 text-xs">Rank</p>
                 <p className="font-normal text-lg text-gray-800">24</p>
               </div>
 
-              <div className="flex gap-2 items-center">
+              <div className="flex flex-col gap-1 items-center">
                 <p className="text-gray-400 text-xs">Points</p>
                 <p className="font-normal text-lg text-gray-800">100</p>
               </div>
             </div>
           </div>
 
-          <button className="text-orange-500 text-sm font-medium hover:underline">
-            View My Rewards →
+          <button className="text-[#fdb100] text-sm font-normal hover:underline flex items-center gap-1">
+            View My Rewards <ChevronRight className="w-4" />
           </button>
         </div>
       </div>
@@ -274,6 +289,11 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
         isOpen={isEditSocialOpen}
         onClose={() => setIsEditSocialOpen(false)}
         editMode={true}
+      />
+      <ShareProfileModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        slug={profile.slug}
       />
     </div>
   );

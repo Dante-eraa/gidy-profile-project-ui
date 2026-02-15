@@ -153,12 +153,12 @@ export default function ExperienceModal({ isOpen, onClose, experience }) {
                     h-[36px]
                     px-5
                     text-[13px]
-                    font-medium
+                    font-normal
                     rounded-md
-                    bg-[#0059d6]
-                    text-white
-                    hover:bg-[#0047ab]
-                    disabled:bg-blue-300
+                    bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200
+                    disabled:bg-sky-300
                     flex items-center justify-center gap-2
                     transition-colors duration-200
                   "

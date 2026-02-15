@@ -55,12 +55,12 @@ export default function FormModal({
                 h-[36px]
                 px-5
                 text-[13px]
-                font-medium
+                font-normal
                 rounded-md
-                bg-[#0059D6]
-                text-white
-                hover:bg-[#0047AB]
-                disabled:bg-[#BFD4F6]
+               bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200
+                    disabled:bg-sky-300
                 flex items-center justify-center gap-2
                 transition-colors
                 w-full sm:w-auto

@@ -8,9 +8,9 @@ export const profileApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: formData,
       }),
-      invalidatesTags: (result, error, arg) => [
+      invalidatesTags: [
         { type: "Profile", id: "CURRENT" },
-        { type: "PublicProfile", id: "CURRENT" },
+        { type: "PublicProfile" },
       ],
     }),
 

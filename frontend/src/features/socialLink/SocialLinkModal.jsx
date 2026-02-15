@@ -46,7 +46,7 @@ export default function SocialLinkModal({ isOpen, onClose }) {
                 <Field
                   as="select"
                   name="platform"
-                  className="w-full border p-2 rounded-md mt-1"
+                  className="w-full  p-2 rounded-md mt-1 outline-0 border-0 bg-gray-100"
                 >
                   <option value="">Select</option>
                   {PLATFORM_OPTIONS.map((p) => (
@@ -64,7 +64,7 @@ export default function SocialLinkModal({ isOpen, onClose }) {
                 <label className="text-sm">URL</label>
                 <Field
                   name="url"
-                  className="w-full border p-2 rounded-md mt-1"
+                  className="w-full border-0 outline-0 bg-gray-100 p-2 rounded-md mt-1"
                 />
                 {errors.url && touched.url && (
                   <p className="text-xs text-red-500">{errors.url}</p>
@@ -82,7 +82,9 @@ export default function SocialLinkModal({ isOpen, onClose }) {
 
                 <button
                   type="submit"
-                  className="bg-[#0059d6] text-white px-4 py-2 rounded-md text-sm"
+                  className="bg-sky-100
+                    text-sky-400
+                    hover:bg-sky-200 px-4 py-2 rounded-md text-sm"
                 >
                   Save
                 </button>
