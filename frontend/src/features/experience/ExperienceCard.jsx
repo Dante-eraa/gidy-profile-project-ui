@@ -74,7 +74,7 @@ export default function ExperienceCard({ profileId, isOwner }) {
         </div>
         <div className="relative">
           {/* Vertical Line */}
-          <div className="absolute left-2 top-0 h-full w-[2px] bg-gray-200"></div>
+          <div className="absolute left-[6.5px] top-0 h-full w-[2px] bg-gray-200"></div>
 
           {sortedExperiences.map((exp) => (
             <div
@@ -87,7 +87,7 @@ export default function ExperienceCard({ profileId, isOwner }) {
                   className={`w-4 h-4 rounded-full border-2 transition-all duration-300 
             ${
               exp.isCurrentlyWorking
-                ? "bg-blue-500 border-blue-500 scale-110"
+                ? "bg-gray-500 border-gray-500 scale-110"
                 : "bg-white border-gray-300 group-hover:border-blue-400"
             }`}
                 ></div>

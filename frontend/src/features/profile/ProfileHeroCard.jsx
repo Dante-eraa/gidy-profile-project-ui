@@ -163,7 +163,7 @@ export default function ProfileHeroCard({ profile, email, isOwner }) {
         {isOwner && open && (
           <div
             ref={menuRef}
-            className="absolute right-0 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50"
+            className="absolute right-0 lg:-right-20 top-10 mt-2 w-52 bg-white border border-gray-100 rounded-xl shadow-lg py-2 z-50"
           >
             <DropdownItem
               icon={<User size={16} />}
