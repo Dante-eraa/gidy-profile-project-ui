@@ -31,7 +31,7 @@ export default function FormModal({
           <div className="space-y-5">{children}</div>
 
           {/* FOOTER */}
-          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 mt-8">
+          <div className="flex  justify-end gap-4  mt-8">
             <button
               type="button"
               onClick={onClose}
@@ -41,7 +41,7 @@ export default function FormModal({
                 font-medium
                 text-[#5F6B7A]
                 hover:text-[#2F3A4C]
-                w-full sm:w-auto
+               
               "
             >
               CANCEL
@@ -63,7 +63,7 @@ export default function FormModal({
                     disabled:bg-sky-300
                 flex items-center justify-center gap-2
                 transition-colors
-                w-full sm:w-auto
+               
               "
             >
               {isSubmitting && (

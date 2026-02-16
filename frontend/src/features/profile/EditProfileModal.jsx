@@ -26,7 +26,8 @@ const validationSchema = Yup.object({
 });
 
 export default function EditProfileModal({ isOpen, onClose }) {
-  const fileRef = useRef();
+  const imageRef = useRef();
+  const resumeRef = useRef();
 
   const { data, isLoading } = useGetProfileQuery(undefined, {
     skip: !isOpen,
@@ -106,7 +107,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
 
                     <button
                       type="button"
-                      onClick={() => fileRef.current.click()}
+                      onClick={() => imageRef.current.click()}
                       className="absolute bottom-1 right-1 bg-[#0059D6] text-white w-7 h-7 rounded-full flex items-center justify-center shadow"
                     >
                       <Pencil size={14} />
@@ -122,7 +123,7 @@ export default function EditProfileModal({ isOpen, onClose }) {
                   {/* Hidden Image Input */}
                   <input
                     type="file"
-                    ref={fileRef}
+                    ref={imageRef}
                     accept="image/*"
                     className="hidden"
                     onChange={(e) => {
@@ -271,43 +272,48 @@ export default function EditProfileModal({ isOpen, onClose }) {
                     </label>
 
                     <div
-                      onClick={() => fileRef.current?.click()}
-                      className="mt-2 flex items-center justify-between px-4 py-3 border border-dashed border-gray-300 rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
+                      onClick={() => resumeRef.current?.click()}
+                      className="mt-2 px-4 py-3 border border-dashed border-gray-300 
+  rounded-lg bg-gray-50 hover:bg-gray-100 cursor-pointer transition"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-md">
-                          <Upload className="w-4 h-4 text-blue-600" />
+                      <div className="flex items-center justify-between gap-3 ">
+                        {/* Left Section */}
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-100 rounded-md">
+                            <Upload className="w-4 h-4 text-blue-600" />
+                          </div>
+
+                          <div>
+                            <p className="text-sm text-gray-700 break-all">
+                              {values.resume
+                                ? values.resume.name
+                                : "Click to upload resume"}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              Only PDF files allowed
+                            </p>
+                          </div>
                         </div>
 
-                        <div>
-                          <p className="text-sm text-gray-700">
-                            {values.resume
-                              ? values.resume.name
-                              : "Click to upload resume"}
-                          </p>
-                          <p className="text-xs text-gray-400">
-                            Only PDF files allowed
-                          </p>
-                        </div>
+                        {/* Remove Button INSIDE Box */}
+                        {values.resume && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setFieldValue("resume", null);
+                            }}
+                            className="text-xs text-red-500 hover:underline shrink-0"
+                          >
+                            Remove
+                          </button>
+                        )}
                       </div>
-
-                      {values.resume && (
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setFieldValue("resume", null);
-                          }}
-                          className="text-xs text-red-500 hover:underline"
-                        >
-                          Remove
-                        </button>
-                      )}
                     </div>
 
                     <input
                       type="file"
-                      ref={fileRef}
+                      ref={resumeRef}
                       accept="application/pdf"
                       className="hidden"
                       onChange={(e) =>
